@@ -1,77 +1,104 @@
-<!DOCTYPE html>
-<html lang="el">
-<head>
-    <meta charset="UTF-8">
-    <title>Προσομοίωση Βαρύτητας</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        canvas {
-            border: 1px solid black;
-            background: url('univ.gif'); /* Προσθήκη background */
-        }
-        .controls {
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Προσομοίωση Βαρύτητας</h1>
-    <canvas id="simulationCanvas" width="800" height="600"></canvas>
-    <div class="controls">
-        <label for="speed">Ταχύτητα:</label>
-        <input type="range" id="speed" min="0" max="100" value="50">
-        <label for="gravity">Βαρύτητα:</label>
-        <input type="range" id="gravity" min="1" max="20" value="9">
-        <button id="startStop">Έναρξη/Παύση</button>
-    </div>
+// voli.js - Μετατροπή της προσομοίωσης από Java σε JavaScript
 
-    <script>
-        const canvas = document.getElementById("simulationCanvas");
-        const ctx = canvas.getContext("2d");
+// Ορισμός των βασικών σταθερών
+const G = 6.67430e-11; // Παγκόσμια σταθερά βαρύτητας
+const M_earth = 5.972e24; // Μάζα της Γης σε kg
+const R = 6371000; // Ακτίνα της Γης σε m
 
-        let running = false;
-        let x = 400, y = 100, vx = 0, vy = 0, gravity = 9.8, speed = 50;
-        let planetImage = new Image();
-        let objectImage = new Image();
-        planetImage.src = "earth.png";  
-        objectImage.src = "apple.gif";  
+// Μεταβλητές προσομοίωσης (ρυθμιζόμενες από sliders)
+let h = 500000; // Αρχικό ύψος πάνω από την επιφάνεια της Γης (m)
+let v0 = 0; // Αρχική ταχύτητα (m/s)
+let dt = 0.1; // Βήμα χρόνου (s)
+let massMultiplier = 1; // Πολλαπλάσιο της μάζας της Γης
 
-        document.getElementById("speed").addEventListener("input", function () {
-            speed = this.value / 10;
-        });
+// Κατάσταση του μήλου
+let y = R + h; // Θέση του μήλου (m)
+let v = v0; // Ταχύτητα (m/s)
 
-        document.getElementById("gravity").addEventListener("input", function () {
-            gravity = this.value;
-        });
+// Ρύθμιση του καμβά
+const canvas = document.getElementById('simulationCanvas');
+const ctx = canvas.getContext('2d');
 
-        document.getElementById("startStop").addEventListener("click", function () {
-            running = !running;
-            if (running) {
-                animate();
-            }
-        });
+// Φόρτωση εικόνων
+const appleImg = new Image();
+appleImg.src = 'apple.gif';
+const earthImg = new Image();
+earthImg.src = 'gh.png';
+const backgroundImg = new Image();
+backgroundImg.src = 'univ.gif';
 
-        function animate() {
-            if (!running) return;
+// Συνάρτηση για υπολογισμό της βαρυτικής επιτάχυνσης
+function getGravity(y) {
+    let M = massMultiplier * M_earth;
+    return (G * M) / (y * y);
+}
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(planetImage, 300, 500, 200, 200); // Πλανήτης
-            ctx.drawImage(objectImage, x, y, 30, 30); // Αντικείμενο που πέφτει
+// Βρόχος ενημέρωσης
+function update() {
+    let g = getGravity(y);
+    v -= g * dt; // Ενημέρωση ταχύτητας
+    y += v * dt; // Ενημέρωση θέσης
 
-            vy += gravity * 0.05; // Προσομοίωση βαρύτητας
-            y += vy;
+    if (y <= R) {
+        y = R;
+        v = 0; // Σταματάμε τη βολή
+    }
+}
 
-            if (y >= 500) { // Αν φτάσει στο έδαφος, σταματά
-                y = 500;
-                vy = -vy * 0.6; // Αναπήδηση
-            }
+// Σχεδίαση της προσομοίωσης
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(earthImg, canvas.width / 2 - 50, canvas.height - 100, 100, 100);
+    let appleY = canvas.height - ((y - R) / 5000); // Βελτιωμένη κλίμακα σχεδίασης
+    ctx.drawImage(appleImg, canvas.width / 2 - 15, appleY, 30, 30);
 
-            requestAnimationFrame(animate);
-        }
-    </script>
-</body>
-</html>
+    // Εμφάνιση αριθμητικών δεδομένων με πλαίσιο
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+    ctx.fillRect(10, 10, 220, 80);
+    ctx.fillStyle = 'white';
+    ctx.font = '16px Arial';
+    ctx.fillText(`Ύψος: ${(y - R).toFixed(2)} m`, 20, 30);
+    ctx.fillText(`Ταχύτητα: ${v.toFixed(2)} m/s`, 20, 50);
+    ctx.fillText(`Βαρύτητα: ${getGravity(y).toFixed(5)} m/s²`, 20, 70);
+}
 
+// Εκτέλεση της προσομοίωσης
+function simulate() {
+    update();
+    draw();
+    requestAnimationFrame(simulate);
+}
+
+// Σύνδεση sliders
+const heightSlider = document.getElementById('heightSlider');
+const speedSlider = document.getElementById('speedSlider');
+const timeStepSlider = document.getElementById('timeStepSlider');
+const massSlider = document.getElementById('massSlider');
+
+heightSlider.addEventListener('input', (e) => {
+    h = parseFloat(e.target.value);
+    y = R + h;
+});
+
+speedSlider.addEventListener('input', (e) => {
+    v0 = parseFloat(e.target.value);
+    v = v0;
+});
+
+timeStepSlider.addEventListener('input', (e) => {
+    dt = parseFloat(e.target.value);
+});
+
+massSlider.addEventListener('input', (e) => {
+    massMultiplier = parseFloat(e.target.value);
+});
+
+// Εκκίνηση της προσομοίωσης όταν φορτωθούν οι εικόνες
+backgroundImg.onload = () => {
+    earthImg.onload = () => {
+        appleImg.onload = () => {
+            simulate();
+        };
+    };
+};
