@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Προσομοίωση Βαρύτητας</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid black;
+            background: url('univ.gif'); /* Προσθήκη background */
+        }
+        .controls {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Προσομοίωση Βαρύτητας</h1>
+    <canvas id="simulationCanvas" width="800" height="600"></canvas>
+    <div class="controls">
+        <label for="speed">Ταχύτητα:</label>
+        <input type="range" id="speed" min="0" max="100" value="50">
+        <label for="gravity">Βαρύτητα:</label>
+        <input type="range" id="gravity" min="1" max="20" value="9">
+        <button id="startStop">Έναρξη/Παύση</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("simulationCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let running = false;
+        let x = 400, y = 100, vx = 0, vy = 0, gravity = 9.8, speed = 50;
+        let planetImage = new Image();
+        let objectImage = new Image();
+        planetImage.src = "earth.png";  
+        objectImage.src = "apple.gif";  
+
+        document.getElementById("speed").addEventListener("input", function () {
+            speed = this.value / 10;
+        });
+
+        document.getElementById("gravity").addEventListener("input", function () {
+            gravity = this.value;
+        });
+
+        document.getElementById("startStop").addEventListener("click", function () {
+            running = !running;
+            if (running) {
+                animate();
+            }
+        });
+
+        function animate() {
+            if (!running) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(planetImage, 300, 500, 200, 200); // Πλανήτης
+            ctx.drawImage(objectImage, x, y, 30, 30); // Αντικείμενο που πέφτει
+
+            vy += gravity * 0.05; // Προσομοίωση βαρύτητας
+            y += vy;
+
+            if (y >= 500) { // Αν φτάσει στο έδαφος, σταματά
+                y = 500;
+                vy = -vy * 0.6; // Αναπήδηση
+            }
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
 
