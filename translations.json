@@ -1,0 +1,70 @@
+{
+  "title": {
+    "el": "Τα μήλα του Νεύτωνα",
+    "en": "Newton's Apples"
+  },
+  "buttons": {
+    "startStop": {
+      "el": "Έναρξη/Στοπ",
+      "en": "Start/Stop"
+    },
+    "reset": {
+      "el": "Reset",
+      "en": "Reset"
+    },
+    "presets": {
+      "earth": {
+        "el": "Πλανήτης Γη",
+        "en": "Earth"
+      },
+      "cosmic1": {
+        "el": "1η Κοσμική",
+        "en": "Cosmic 1"
+      },
+      "cosmic2": {
+        "el": "2η Κοσμική",
+        "en": "Cosmic 2"
+      }
+    }
+  },
+  "labels": {
+    "radius": {
+      "el": "Ακτίνα (km):",
+      "en": "Radius (km):"
+    },
+    "height": {
+      "el": "Ύψος εκτόξευσης (km):",
+      "en": "Launch Height (km):"
+    },
+    "speed": {
+      "el": "Ταχύτητα (km/s):",
+      "en": "Speed (km/s):"
+    },
+    "timeStep": {
+      "el": "Βήμα χρόνου (s):",
+      "en": "Time Step (s):"
+    },
+    "mass": {
+      "el": "Μάζα (xΓη):",
+      "en": "Mass (x Earth):"
+    }
+  },
+  "dataOverlay": {
+    "time": {
+      "el": "Χρόνος:",
+      "en": "Time:"
+    },
+    "height": {
+      "el": "Ύψος:",
+      "en": "Height:"
+    },
+    "speed": {
+      "el": "Ταχύτητα:",
+      "en": "Speed:"
+    },
+    "gravity": {
+      "el": "Βαρύτητα:",
+      "en": "Gravity:"
+    }
+  }
+}
