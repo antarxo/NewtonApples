@@ -5,7 +5,7 @@
   },
   "buttons": {
     "startStop": {
-      "el": "Έναρξη/Στοπ",
+      "el": "Έναρξη/Παύση",
       "en": "Start/Stop"
     },
     "reset": {
