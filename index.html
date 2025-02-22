@@ -55,7 +55,7 @@
       white-space: pre;
       pointer-events: none;
     }
-    /* Overlay για τα preset κουμπιά, στο κάτω μέρος, πάνω από τους sliders */
+    /* Overlay για τα preset κουμπιά, πάνω στο κάτω μέρος, πάνω από τους sliders */
     #presetsOverlay {
       position: absolute;
       bottom: 60px;
@@ -70,7 +70,7 @@
       font-size: 12px;
       cursor: pointer;
     }
-    /* Overlay για τους sliders, σε μια σειρά στο κάτω μέρος */
+    /* Overlay για τους sliders, σε μία σειρά στο κάτω μέρος */
     #slidersOverlay {
       position: absolute;
       bottom: 10px;
@@ -118,11 +118,13 @@
     <canvas id="simulationCanvas" width="800" height="600"></canvas>
     <div id="titleOverlay">Τα μήλα του Νεύτωνα</div>
     <div id="dataOverlay"></div>
+    <!-- Preset κουμπιά πάνω από τους sliders -->
     <div id="presetsOverlay">
       <button id="presetEarth">Πλανήτης Γη</button>
       <button id="presetCosmic1">1η Κοσμική</button>
       <button id="presetCosmic2">2η Κοσμική</button>
     </div>
+    <!-- Sliders overlay στο κάτω μέρος -->
     <div id="slidersOverlay">
       <div class="sliderGroup">
         <label id="radiusLabel" for="radiusSlider">Ακτίνα (km): <span id="radiusValueSlider">6400,000</span></label>
@@ -150,6 +152,7 @@
         <input type="number" id="massNumber" min="0.1" max="10" step="0.1" value="1">
       </div>
     </div>
+    <!-- Κουμπιά στο πάνω δεξιό μέρος -->
     <div id="buttonOverlay">
       <button id="startButton">Έναρξη</button>
       <button id="resetButton">Reset</button>
@@ -173,7 +176,7 @@
       },
       "labels": {
         "radius": { "el": "Ακτίνα (km):", "en": "Radius (km):" },
-        "height": { "el": "Ύψος (km):", "en": "Height (km):" },
+        "height": { "el": "Ύψος εκτόξευσης (km):", "en": "Launch Height (km):" },
         "speed": { "el": "Ταχύτητα (km/s):", "en": "Speed (km/s):" },
         "timeStep": { "el": "Βήμα χρόνου (s):", "en": "Time Step (s):" },
         "mass": { "el": "Μάζα (xΓη):", "en": "Mass (x Earth):" }
@@ -189,7 +192,7 @@
     let currentLang = "el";
     let translations = defaultTranslations;
     
-    // Load translations.json
+    // Load translations.json (τρέξε μέσω HTTP/HTTPS)
     fetch('translations.json')
       .then(response => response.json())
       .then(data => { translations = data; updateLanguage(); })
@@ -228,7 +231,6 @@
     let running = false;
     let simTime = 0;
     
-    // Σύστημα αναφοράς: (0,0) στο κέντρο της Γης, για καμβά 800x600, μετατοπισμένο πάνω κατά 120px
     const earthCenterX = 400;
     const earthCenterY = 300 - 120; // (400,180)
     
@@ -606,7 +608,7 @@
       updateOverlay();
     });
     
-    
+    let previousSignX = null;
     backgroundImg.onload = () => {
       earthImg.onload = () => {
         appleImg.onload = () => {
