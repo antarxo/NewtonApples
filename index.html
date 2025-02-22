@@ -123,7 +123,7 @@
       font-size: 14px;
       cursor: pointer;
     }
-    /* Overlay μηνύματος (με τον Newton) */
+    /* Overlay μηνύματος (με τον Newton) - μικρότερη γραμματοσειρά και μια γραμμή */
     #messageOverlay {
       position: absolute;
       top: 50%;
@@ -131,15 +131,16 @@
       transform: translate(-50%, -50%);
       background: rgba(0,0,0,0.7);
       color: white;
-      padding: 20px;
+      padding: 10px;
       border-radius: 10px;
-      font-size: 18px;
+      font-size: 12px; /* μικρότερη γραμματοσειρά */
       display: none;
       align-items: center;
-      gap: 10px;
+      gap: 5px;
+      white-space: nowrap; /* εμφάνιση σε μία γραμμή */
     }
     #messageOverlay img {
-      max-width: 50px;
+      max-width: 30px; /* μικρότερη εικόνα */
       height: auto;
     }
   </style>
@@ -365,7 +366,7 @@
         showMessage(translations.messages.pause[currentLang]);
         return;
       }
-      previousSignX = Math.sign(x); // Διόρθωση: χωρίς fallback σε 1
+      previousSignX = Math.sign(x); // Χωρίς fallback σε 1
 
       let ax = - (G * (massMultiplier * M_earth)) * (x / (r * r * r));
       let ay = - (G * (massMultiplier * M_earth)) * (y / (r * r * r));
