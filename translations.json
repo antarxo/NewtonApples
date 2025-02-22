@@ -70,5 +70,23 @@
       "el": "Βαρύτητα:",
       "en": "Gravity:"
     }
+  },
+  "messages": {
+    "pause": {
+      "el": "Δείτε τιμές μεγεθών κάθε φορά που πιέζετε Παύση!",
+      "en": "Check values each time you press Pause!"
+    },
+    "appleFellEarth": {
+      "el": "Το μήλο έπεσε πάνω στη Γη",
+      "en": "The apple fell on Earth"
+    },
+    "appleFellOther": {
+      "el": "Το μήλο έπεσε πάνω στον πλανήτη",
+      "en": "The apple fell on the planet"
+    },
+    "appleEscaped": {
+      "el": "Το μήλο διέφυγε",
+      "en": "The apple escaped"
+    }
   }
 }
