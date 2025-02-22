@@ -217,6 +217,8 @@
         console.error('Error loading translations:', error);
       });
 
+    let currentLang = "el";
+
     function updateLanguage() {
       document.getElementById('titleOverlay').innerText = translations.title[currentLang];
       document.getElementById('presetEarth').innerText = translations.buttons.presets.earth[currentLang];
@@ -232,8 +234,6 @@
       updateStartButtonText();
       updateOverlay();
     }
-
-    let currentLang = "el";
 
     // Ενημέρωση του κουμπιού εκκίνησης/παύσης βάσει του translations.buttons.startStop
     function updateStartButtonText() {
@@ -355,7 +355,7 @@
       return (G * (massMultiplier * M_earth)) / (r * r);
     }
 
-    // Σταματάει αυτόματα η προσομοίωση όταν αλλάζει το πρόσημο του x
+    // Ελέγχει αλλαγή προσήμου του x για αυτόματη παύση
     function updateSimulation() {
       let r = Math.sqrt(x * x + y * y);
 
@@ -365,7 +365,7 @@
         showMessage(translations.messages.pause[currentLang]);
         return;
       }
-      previousSignX = Math.sign(x) || 1;
+      previousSignX = Math.sign(x); // Διόρθωση: χωρίς fallback σε 1
 
       let ax = - (G * (massMultiplier * M_earth)) * (x / (r * r * r));
       let ay = - (G * (massMultiplier * M_earth)) * (y / (r * r * r));
@@ -443,7 +443,7 @@
       running = !running;
       updateStartButtonText();
       if (running) {
-        previousSignX = Math.sign(x) || 1;
+        previousSignX = Math.sign(x);
         simulate();
       }
     });
