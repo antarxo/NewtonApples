@@ -12,6 +12,10 @@
       "el": "Reset",
       "en": "Reset"
     },
+    "langToggle": {
+      "el": "EN",
+      "en": "GR"
+    },
     "presets": {
       "earth": {
         "el": "Πλανήτης Γη",
