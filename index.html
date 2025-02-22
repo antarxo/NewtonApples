@@ -7,7 +7,7 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, monospace;
       background: #f7f7f7;
       display: flex;
       justify-content: center;
@@ -15,7 +15,7 @@
       height: 100vh;
       overflow: hidden;
     }
-    /* Καμβάς και διάταξη */
+    /* Καμβάς και βασική διάταξη */
     #canvasContainer {
       position: relative;
       width: 800px;
@@ -42,19 +42,35 @@
       font-size: 20px;
       pointer-events: none;
     }
-    /* Overlay για τα δεδομένα (μετρητές) πάνω αριστερά */
+    /* Overlay για τα δεδομένα, πάνω αριστερά */
     #dataOverlay {
       position: absolute;
-      top: 10px;
+      top: 40px;
       left: 10px;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.5);
       color: white;
       padding: 5px 10px;
       border-radius: 5px;
       font-size: 14px;
+      white-space: pre;
       pointer-events: none;
     }
-    /* Overlay για τους sliders, σε μία σειρά στο κάτω μέρος */
+    /* Overlay για τα preset κουμπιά, στο κάτω μέρος, πάνω από τους sliders */
+    #presetsOverlay {
+      position: absolute;
+      bottom: 60px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+    #presetsOverlay button {
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    /* Overlay για τους sliders, σε μια σειρά στο κάτω μέρος */
     #slidersOverlay {
       position: absolute;
       bottom: 10px;
@@ -62,7 +78,7 @@
       right: 10px;
       display: flex;
       justify-content: space-around;
-      background: rgba(50, 50, 50, 0.7);
+      background: rgba(50,50,50,0.7);
       color: white;
       padding: 5px 10px;
       border-radius: 5px;
@@ -82,10 +98,10 @@
       height: 20px;
       font-size: 12px;
     }
-    /* Overlay για τα κουμπιά, στο κάτω δεξιό μέρος */
+    /* Overlay για τα κουμπιά, πάνω δεξιά */
     #buttonOverlay {
       position: absolute;
-      bottom: 10px;
+      top: 10px;
       right: 10px;
       display: flex;
       gap: 5px;
@@ -102,24 +118,34 @@
     <canvas id="simulationCanvas" width="800" height="600"></canvas>
     <div id="titleOverlay">Τα μήλα του Νεύτωνα</div>
     <div id="dataOverlay"></div>
+    <div id="presetsOverlay">
+      <button id="presetEarth">Πλανήτης Γη</button>
+      <button id="presetCosmic1">1η Κοσμική</button>
+      <button id="presetCosmic2">2η Κοσμική</button>
+    </div>
     <div id="slidersOverlay">
       <div class="sliderGroup">
-        <label for="heightSlider">Ύψος (km): <span id="heightValueSlider">500,000</span></label>
-        <input type="range" id="heightSlider" min="0" max="1000000" step="10000" value="500000">
-        <input type="number" id="heightNumber" min="0" max="1000000" step="10000" value="500000">
+        <label id="radiusLabel" for="radiusSlider">Ακτίνα (km): <span id="radiusValueSlider">6400,000</span></label>
+        <input type="range" id="radiusSlider" min="1" max="10000" step="1" value="6400">
+        <input type="number" id="radiusNumber" min="1" max="10000" step="1" value="6400">
       </div>
       <div class="sliderGroup">
-        <label for="speedSlider">Ταχύτητα (km/s): <span id="speedValueSlider">0,000</span></label>
-        <input type="range" id="speedSlider" min="0" max="10000" step="100" value="0">
-        <input type="number" id="speedNumber" min="0" max="10000" step="100" value="0">
+        <label id="heightLabel" for="heightSlider">Ύψος (km): <span id="heightValueSlider">0,000</span></label>
+        <input type="range" id="heightSlider" min="0" max="6400" step="10" value="0">
+        <input type="number" id="heightNumber" min="0" max="6400" step="10" value="0">
       </div>
       <div class="sliderGroup">
-        <label for="timeStepSlider">Βήμα χρόνου (s): <span id="timeStepValueSlider">0,10</span></label>
-        <input type="range" id="timeStepSlider" min="-1" max="3" step="0.1" value="-1">
-        <input type="number" id="timeStepNumber" min="0.1" max="6000" step="0.1" value="0.1">
+        <label id="speedLabel" for="speedSlider">Ταχύτητα (km/s): <span id="speedValueSlider">0,000</span></label>
+        <input type="range" id="speedSlider" min="0" max="30" step="0.1" value="0">
+        <input type="number" id="speedNumber" min="0" max="30" step="0.1" value="0">
       </div>
       <div class="sliderGroup">
-        <label for="massSlider">Μάζα (xΓη): <span id="massValueSlider">1,000</span></label>
+        <label id="timeStepLabel" for="timeStepSlider">Βήμα χρόνου (s): <span id="timeStepValueSlider">0,100</span></label>
+        <input type="range" id="timeStepSlider" min="-2" max="1.3" step="0.1" value="-1">
+        <input type="number" id="timeStepNumber" min="0.01" max="20" step="0.01" value="0.1">
+      </div>
+      <div class="sliderGroup">
+        <label id="massLabel" for="massSlider">Μάζα (xΓη): <span id="massValueSlider">1,000</span></label>
         <input type="range" id="massSlider" min="0.1" max="10" step="0.1" value="1">
         <input type="number" id="massNumber" min="0.1" max="10" step="0.1" value="1">
       </div>
@@ -127,63 +153,115 @@
     <div id="buttonOverlay">
       <button id="startButton">Έναρξη</button>
       <button id="resetButton">Reset</button>
+      <button id="langToggle">EN</button>
     </div>
   </div>
   
   <script>
+    // Default translations fallback
+    const defaultTranslations = {
+      "title": { "el": "Τα μήλα του Νεύτωνα", "en": "Newton's Apples" },
+      "buttons": {
+        "startStop": { "el": "Έναρξη/Στοπ", "en": "Start/Stop" },
+        "reset": { "el": "Reset", "en": "Reset" },
+        "langToggle": { "el": "EN", "en": "GR" },
+        "presets": {
+          "earth": { "el": "Πλανήτης Γη", "en": "Earth" },
+          "cosmic1": { "el": "1η Κοσμική", "en": "Cosmic 1" },
+          "cosmic2": { "el": "2η Κοσμική", "en": "Cosmic 2" }
+        }
+      },
+      "labels": {
+        "radius": { "el": "Ακτίνα (km):", "en": "Radius (km):" },
+        "height": { "el": "Ύψος (km):", "en": "Height (km):" },
+        "speed": { "el": "Ταχύτητα (km/s):", "en": "Speed (km/s):" },
+        "timeStep": { "el": "Βήμα χρόνου (s):", "en": "Time Step (s):" },
+        "mass": { "el": "Μάζα (xΓη):", "en": "Mass (x Earth):" }
+      },
+      "dataOverlay": {
+        "time": { "el": "Χρόνος:", "en": "Time:" },
+        "height": { "el": "Ύψος:", "en": "Height:" },
+        "speed": { "el": "Ταχύτητα:", "en": "Speed:" },
+        "gravity": { "el": "Βαρύτητα:", "en": "Gravity:" }
+      }
+    };
+    
+    let currentLang = "el";
+    let translations = defaultTranslations;
+    
+    // Load translations.json
+    fetch('translations.json')
+      .then(response => response.json())
+      .then(data => { translations = data; updateLanguage(); })
+      .catch(error => { console.error('Error loading translations:', error); translations = defaultTranslations; updateLanguage(); });
+    
+    function updateLanguage() {
+      if (!translations || !translations.title) return;
+      document.getElementById('titleOverlay').innerText = translations.title[currentLang];
+      document.getElementById('presetEarth').innerText = translations.buttons.presets.earth[currentLang];
+      document.getElementById('presetCosmic1').innerText = translations.buttons.presets.cosmic1[currentLang];
+      document.getElementById('presetCosmic2').innerText = translations.buttons.presets.cosmic2[currentLang];
+      document.getElementById('startButton').innerText = translations.buttons.startStop[currentLang];
+      document.getElementById('resetButton').innerText = translations.buttons.reset[currentLang];
+      document.getElementById('langToggle').innerText = translations.buttons.langToggle[currentLang];
+      document.getElementById('radiusLabel').innerText = translations.labels.radius[currentLang];
+      document.getElementById('heightLabel').innerText = translations.labels.height[currentLang];
+      document.getElementById('speedLabel').innerText = translations.labels.speed[currentLang];
+      document.getElementById('timeStepLabel').innerText = translations.labels.timeStep[currentLang];
+      document.getElementById('massLabel').innerText = translations.labels.mass[currentLang];
+      updateOverlay();
+    }
+    
+    document.getElementById('langToggle').addEventListener('click', () => {
+      currentLang = (currentLang === "el") ? "en" : "el";
+      updateLanguage();
+    });
+    
     // Σταθερές
     const G = 6.67430e-11;
     const M_earth = 5.972e24;
-    const R = 6371000; // σε μέτρα
-    
-    // Αρχικές τιμές
-    let h = 500000; // m
-    let v0 = 0;     // m/s
-    let dt = 0.1;   // s
+    let planetRadius = 6400000; // 6400 km σε m
+    let h = 0;                // 0 έως 6400 km σε m
+    let v0 = 0;               // m/s, max 30000 m/s
+    let dt = 0.1;             // s
     let massMultiplier = 1;
     let running = false;
     let simTime = 0;
     
-    // Σύστημα αναφοράς: (0,0) στο κέντρο της Γης. Για καμβά 800x600, το κέντρο είναι (400,300)
-    // Μετατοπίζουμε κατακόρυφα προς τα πάνω κατά ~120px (λιγότερο από 1/4 του ύψους του φόντου)
+    // Σύστημα αναφοράς: (0,0) στο κέντρο της Γης, για καμβά 800x600, μετατοπισμένο πάνω κατά 120px
     const earthCenterX = 400;
-    const earthCenterY = 300 - 120; // νέο κέντρο: (400, 180)
+    const earthCenterY = 300 - 120; // (400,180)
     
-    // Scale: αρχικά R αντιστοιχεί σε 100 px (διάμετρος 200 px)
-    let initialScale = R / 100;
+    let initialScale = planetRadius / 100;
     let scale = initialScale;
     
-    // Η αρχική θέση του μήλου στο σύστημα αναφοράς: (0, R+h)
     let x = 0;
-    let y = R + h;
+    let y = planetRadius + h;
     let vx = v0;
     let vy = 0;
     
-    // Για τα ίχνη, καταγράφουμε μόνο κάθε 3 ενημερώσεις
     let updateCounter = 0;
-    let trajectory = []; // αποθηκεύουμε simulation coordinates: { simX, simY }
+    let trajectory = [];
     
     const canvas = document.getElementById('simulationCanvas');
     const ctx = canvas.getContext('2d');
     
-    // Φόρτωση εικόνων
     const appleImg = new Image();
     appleImg.src = 'apple.gif';
     let earthImg = new Image();
-    earthImg.src = 'gh.png'; // αρχική εικόνα της Γης
+    earthImg.src = 'gh.png';
     const backgroundImg = new Image();
     backgroundImg.src = 'univ.gif';
     
-    // Αν η μάζα δεν είναι 1, δείξε την εικόνα "other.png"
     function updatePlanetImage() {
-      if (parseFloat(document.getElementById('massSlider').value) != 1) {
+      if (parseFloat(document.getElementById('massSlider').value) != 1 ||
+          parseFloat(document.getElementById('radiusSlider').value) != 6400) {
         earthImg.src = 'other.png';
       } else {
         earthImg.src = 'gh.png';
       }
     }
     
-    // Μετατροπή simulation coordinates σε canvas coordinates
     function simToCanvas(simX, simY) {
       return {
         canvasX: earthCenterX + simX / scale,
@@ -191,12 +269,10 @@
       };
     }
     
-    // Μορφοποίηση αριθμών με κόμμα ως υποδιαστολή
     function formatNumber(num, decimals) {
       return num.toFixed(decimals).replace('.', ',');
     }
     
-    // Μορφοποίηση χρόνου σε hh:mm:ss
     function formatTime(seconds) {
       let hh = Math.floor(seconds / 3600);
       let mm = Math.floor((seconds % 3600) / 60);
@@ -206,47 +282,50 @@
              (ss < 10 ? '0' + ss : ss);
     }
     
-    // Ενημέρωση overlay δεδομένων (πάνω αριστερά, κάτω από τον τίτλο)
     function updateOverlay() {
-      let r = Math.sqrt(x * x + y * y);
-      let heightKm = (r - R) / 1000;
-      let speedKms = Math.sqrt(vx * vx + vy * vy) / 1000;
-      let gVal = getGravity(y);
+      let r = Math.sqrt(x*x + y*y);
+      let heightKm = (r - planetRadius) / 1000;
+      let speedKms = Math.sqrt(vx*vx + vy*vy) / 1000;
+      let gVal = getGravity();
       document.getElementById('dataOverlay').innerHTML =
-        "Χρόνος: " + formatTime(simTime) + "<br>" +
-        "Ύψος: " + formatNumber(heightKm, 3) + " km<br>" +
-        "Ταχύτητα: " + formatNumber(speedKms, 3) + " km/s<br>" +
-        "Βαρύτητα: " + formatNumber(gVal, 3) + " m/s²";
+        translations.dataOverlay.time[currentLang] + " " + formatTime(simTime) + "\n" +
+        translations.dataOverlay.height[currentLang] + " " + formatNumber(heightKm, 3) + " km\n" +
+        translations.dataOverlay.speed[currentLang] + " " + formatNumber(speedKms, 3) + " km/s\n" +
+        translations.dataOverlay.gravity[currentLang] + " " + formatNumber(gVal, 3) + " m/s²";
     }
     
-    // Σχεδίαση αρχικής κατάστασης
     function drawInitialState() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
       let earthSize = 200 * (initialScale / scale);
-      ctx.drawImage(earthImg, earthCenterX - earthSize / 2, earthCenterY - earthSize / 2, earthSize, earthSize);
+      ctx.drawImage(earthImg, earthCenterX - earthSize/2, earthCenterY - earthSize/2, earthSize, earthSize);
       let pos = simToCanvas(x, y);
       ctx.drawImage(appleImg, pos.canvasX - 2.5, pos.canvasY - 2.5, 5, 5);
       updateOverlay();
     }
     
-    // Υπολογισμός βαρυτικής επιτάχυνσης
-    function getGravity(y) {
-      return (G * (massMultiplier * M_earth)) / (y * y);
+    function getGravity() {
+      let r = Math.sqrt(x*x + y*y);
+      return (G * (massMultiplier * M_earth)) / (r * r);
     }
     
-    // Ενημέρωση προσομοίωσης: πλήρης διανυσματική προσέγγιση
     function updateSimulation() {
-      let r = Math.sqrt(x * x + y * y);
-      let ax = - (G * (massMultiplier * M_earth)) * (x / (r * r * r));
-      let ay = - (G * (massMultiplier * M_earth)) * (y / (r * r * r));
+      let r = Math.sqrt(x*x + y*y);
+      let ax = - (G * (massMultiplier * M_earth)) * (x / (r*r*r));
+      let ay = - (G * (massMultiplier * M_earth)) * (y / (r*r*r));
       vx += ax * dt;
       vy += ay * dt;
       x += vx * dt;
       y += vy * dt;
       simTime += dt;
       
-      if (Math.sqrt(x * x + y * y) < R) {
+      if (previousSignX !== null && Math.sign(x) !== previousSignX) {
+        running = false;
+        startButton.textContent = translations.buttons.startStop[currentLang];
+      }
+      previousSignX = Math.sign(x) || 1;
+      
+      if (Math.sqrt(x*x + y*y) < planetRadius) {
         running = false;
         alert('Η προσομοίωση σταμάτησε: το μήλο έπεσε στη Γη.');
       }
@@ -263,16 +342,15 @@
       updateCounter++;
       if (updateCounter % 3 === 0) {
         trajectory.push({ simX: x, simY: y });
-        if (trajectory.length > 1000) trajectory.shift();
+        if (trajectory.length > 10000) trajectory.shift();
       }
     }
     
-    // Σχεδίαση προσομοίωσης και τροχιάς
     function drawSimulation() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
       let earthSize = 200 * (initialScale / scale);
-      ctx.drawImage(earthImg, earthCenterX - earthSize / 2, earthCenterY - earthSize / 2, earthSize, earthSize);
+      ctx.drawImage(earthImg, earthCenterX - earthSize/2, earthCenterY - earthSize/2, earthSize, earthSize);
       ctx.fillStyle = 'yellow';
       for (let i = 0; i < trajectory.length; i++) {
         let point = simToCanvas(trajectory[i].simX, trajectory[i].simY);
@@ -292,73 +370,203 @@
       requestAnimationFrame(simulate);
     }
     
-    // Toggle κουμπί "Έναρξη"/"Στοπ"
     const startButton = document.getElementById('startButton');
+    let previousSignX = null;
     startButton.addEventListener('click', () => {
       running = !running;
-      startButton.textContent = running ? "Στοπ" : "Έναρξη";
-      if (running) simulate();
+      startButton.textContent = translations.buttons.startStop[currentLang];
+      if (running) {
+        previousSignX = Math.sign(x) || 1;
+        simulate();
+      }
     });
     
-    // Κουμπί Reset
     const resetButton = document.getElementById('resetButton');
     resetButton.addEventListener('click', () => {
       running = false;
       simTime = 0;
-      h = parseFloat(document.getElementById('heightSlider').value);
-      v0 = parseFloat(document.getElementById('speedSlider').value);
+      planetRadius = parseFloat(document.getElementById('radiusSlider').value) * 1000;
+      h = parseFloat(document.getElementById('heightSlider').value) * 1000;
+      v0 = parseFloat(document.getElementById('speedSlider').value) * 1000;
       dt = Math.pow(10, parseFloat(document.getElementById('timeStepSlider').value));
       massMultiplier = parseFloat(document.getElementById('massSlider').value);
       x = 0;
-      y = R + h;
+      y = planetRadius + h;
       vx = v0;
       vy = 0;
+      initialScale = planetRadius / 100;
       scale = initialScale;
       trajectory = [];
-      startButton.textContent = "Έναρξη";
+      startButton.textContent = translations.buttons.startStop[currentLang];
       drawInitialState();
       updateOverlay();
     });
     
-    // Σύνδεση sliders και αριθμητικών πεδίων
+    // Preset κουμπιά
+    document.getElementById('presetEarth').addEventListener('click', () => {
+      radiusSlider.value = 6400;
+      radiusNumber.value = 6400;
+      planetRadius = 6400 * 1000;
+      document.getElementById('radiusValueSlider').innerText = formatNumber(6400, 3);
+      
+      heightSlider.value = 0;
+      heightNumber.value = 0;
+      h = 0;
+      document.getElementById('heightValueSlider').innerText = formatNumber(0, 3);
+      
+      speedSlider.value = 0;
+      speedNumber.value = 0;
+      v0 = 0;
+      document.getElementById('speedValueSlider').innerText = formatNumber(0, 3);
+      
+      massSlider.value = 1;
+      massNumber.value = 1;
+      massMultiplier = 1;
+      updatePlanetImage();
+      
+      initialScale = planetRadius / 100;
+      scale = initialScale;
+      x = 0;
+      y = planetRadius + h;
+      vx = v0;
+      vy = 0;
+      simTime = 0;
+      trajectory = [];
+      drawInitialState();
+      updateOverlay();
+    });
+    
+    document.getElementById('presetCosmic1').addEventListener('click', () => {
+      radiusSlider.value = 6400;
+      radiusNumber.value = 6400;
+      planetRadius = 6400 * 1000;
+      document.getElementById('radiusValueSlider').innerText = formatNumber(6400, 3);
+      
+      heightSlider.value = 0;
+      heightNumber.value = 0;
+      h = 0;
+      document.getElementById('heightValueSlider').innerText = formatNumber(0, 3);
+      
+      speedSlider.value = 7.924;
+      speedNumber.value = 7.924;
+      v0 = 7.924 * 1000;
+      document.getElementById('speedValueSlider').innerText = formatNumber(7.924, 3);
+      
+      massSlider.value = 1;
+      massNumber.value = 1;
+      massMultiplier = 1;
+      updatePlanetImage();
+      
+      initialScale = planetRadius / 100;
+      scale = initialScale;
+      x = 0;
+      y = planetRadius + h;
+      vx = v0;
+      vy = 0;
+      simTime = 0;
+      trajectory = [];
+      drawInitialState();
+      updateOverlay();
+    });
+    
+    document.getElementById('presetCosmic2').addEventListener('click', () => {
+      radiusSlider.value = 6400;
+      radiusNumber.value = 6400;
+      planetRadius = 6400 * 1000;
+      document.getElementById('radiusValueSlider').innerText = formatNumber(6400, 3);
+      
+      heightSlider.value = 0;
+      heightNumber.value = 0;
+      h = 0;
+      document.getElementById('heightValueSlider').innerText = formatNumber(0, 3);
+      
+      speedSlider.value = 11.106;
+      speedNumber.value = 11.106;
+      v0 = 11.106 * 1000;
+      document.getElementById('speedValueSlider').innerText = formatNumber(11.106, 3);
+      
+      massSlider.value = 1;
+      massNumber.value = 1;
+      massMultiplier = 1;
+      updatePlanetImage();
+      
+      initialScale = planetRadius / 100;
+      scale = initialScale;
+      x = 0;
+      y = planetRadius + h;
+      vx = v0;
+      vy = 0;
+      simTime = 0;
+      trajectory = [];
+      drawInitialState();
+      updateOverlay();
+    });
+    
+    // Σύνδεση slider για ακτίνα πλανήτη
+    const radiusSlider = document.getElementById('radiusSlider');
+    const radiusNumber = document.getElementById('radiusNumber');
+    radiusSlider.addEventListener('input', (e) => {
+      planetRadius = parseFloat(e.target.value) * 1000;
+      document.getElementById('radiusValueSlider').innerText = formatNumber(planetRadius/1000, 3);
+      radiusNumber.value = e.target.value;
+      initialScale = planetRadius / 100;
+      scale = initialScale;
+      y = planetRadius + h;
+      drawInitialState();
+      updateOverlay();
+    });
+    radiusNumber.addEventListener('input', (e) => {
+      planetRadius = parseFloat(e.target.value) * 1000;
+      document.getElementById('radiusValueSlider').innerText = formatNumber(planetRadius/1000, 3);
+      radiusSlider.value = e.target.value;
+      initialScale = planetRadius / 100;
+      scale = initialScale;
+      y = planetRadius + h;
+      drawInitialState();
+      updateOverlay();
+    });
+    
+    // Σύνδεση slider για ύψος
     const heightSlider = document.getElementById('heightSlider');
     const heightNumber = document.getElementById('heightNumber');
     heightSlider.addEventListener('input', (e) => {
-      h = parseFloat(e.target.value);
-      document.getElementById('heightValueSlider').innerText = formatNumber(h / 1000, 3);
-      heightNumber.value = h;
-      y = R + h;
+      h = parseFloat(e.target.value) * 1000;
+      document.getElementById('heightValueSlider').innerText = formatNumber(h/1000, 3);
+      heightNumber.value = e.target.value;
+      y = planetRadius + h;
       drawInitialState();
       updateOverlay();
     });
     heightNumber.addEventListener('input', (e) => {
-      h = parseFloat(e.target.value);
-      document.getElementById('heightValueSlider').innerText = formatNumber(h / 1000, 3);
-      heightSlider.value = h;
-      y = R + h;
+      h = parseFloat(e.target.value) * 1000;
+      document.getElementById('heightValueSlider').innerText = formatNumber(h/1000, 3);
+      heightSlider.value = e.target.value;
+      y = planetRadius + h;
       drawInitialState();
       updateOverlay();
     });
     
+    // Σύνδεση slider για ταχύτητα
     const speedSlider = document.getElementById('speedSlider');
     const speedNumber = document.getElementById('speedNumber');
     speedSlider.addEventListener('input', (e) => {
-      v0 = parseFloat(e.target.value);
-      document.getElementById('speedValueSlider').innerText = formatNumber(v0 / 1000, 3);
-      speedNumber.value = v0;
+      v0 = parseFloat(e.target.value) * 1000;
+      document.getElementById('speedValueSlider').innerText = formatNumber(v0/1000, 3);
+      speedNumber.value = e.target.value;
       vx = v0;
       drawInitialState();
       updateOverlay();
     });
     speedNumber.addEventListener('input', (e) => {
-      v0 = parseFloat(e.target.value);
-      document.getElementById('speedValueSlider').innerText = formatNumber(v0 / 1000, 3);
-      speedSlider.value = v0;
+      v0 = parseFloat(e.target.value) * 1000;
+      document.getElementById('speedValueSlider').innerText = formatNumber(v0/1000, 3);
+      speedSlider.value = e.target.value;
       vx = v0;
       drawInitialState();
       updateOverlay();
     });
     
+    // Σύνδεση slider για βήμα χρόνου
     const timeStepSlider = document.getElementById('timeStepSlider');
     const timeStepNumber = document.getElementById('timeStepNumber');
     timeStepSlider.addEventListener('input', (e) => {
@@ -378,12 +586,13 @@
       updateOverlay();
     });
     
+    // Σύνδεση slider για μάζα
     const massSlider = document.getElementById('massSlider');
     const massNumber = document.getElementById('massNumber');
     massSlider.addEventListener('input', (e) => {
       massMultiplier = parseFloat(e.target.value);
       document.getElementById('massValueSlider').innerText = formatNumber(massMultiplier, 3);
-      massNumber.value = massMultiplier;
+      massNumber.value = e.target.value;
       updatePlanetImage();
       drawInitialState();
       updateOverlay();
@@ -391,11 +600,12 @@
     massNumber.addEventListener('input', (e) => {
       massMultiplier = parseFloat(e.target.value);
       document.getElementById('massValueSlider').innerText = formatNumber(massMultiplier, 3);
-      massSlider.value = massMultiplier;
+      massSlider.value = e.target.value;
       updatePlanetImage();
       drawInitialState();
       updateOverlay();
     });
+    
     
     backgroundImg.onload = () => {
       earthImg.onload = () => {
